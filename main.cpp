@@ -2,7 +2,9 @@
 #include <string>
 #include <vector>
 #include <sstream>
-void tokenize(std::string entry){
+#include <unistd.h>/*Required for fork() and execvp()*/
+#include <sys/wait.h>/*Required for waitpid()*/
+void tokenizeAndExecute(std::string entry){
     std::istringstream ss(entry);//splits the input in the entry variable by spaces
     std::string word;
     std::vector<std::string> args;// a dynamic array where each argument of the entry variable is stored
@@ -12,16 +14,40 @@ void tokenize(std::string entry){
     if(args.empty()){//checks if the user has entered any text
         return;
     }
-    std::cout<<"-> Parsed command: "<<args[0]<<"\n";
-    for(size_t i = 1; i < args.size(); ++i){
-        std::cout<<"-> Argument "<<i<<": "<<args[i]<<"\n";
+    std::vector<char*> c_args;
+    for(const auto& arg : args){
+        c_args.push_back(const_cast<char*>(arg.c_str()));
     }
+    c_args.push_back(nullptr);
+    /*Cloning the process*/
+    pid_t pid = fork();
+
+    if(pid < 0){
+        /*Fork failed*/
+        std::cerr <<"mysh: Forking was unsuccessful!";
+    }else if(pid == 0){
+        /*Forking was successful and a clone takes over the operations*/
+        if(execvp(c_args[0], c_args.data()) == -1){
+            std::perror("mysh");
+            _exit(1);
+        }
+    }
+    else{
+        int status;
+        waitpid(pid, &status,0);
+    }
+
+    
+    /*std::cout<<"-> Parsed command: "<<args[0]<<"\n";
+    for(size_t i = 1; i < args.size(); ++i){
+        std::cout<<"-> Argument "<<i<<": "<<args[i]<<"\n";*/
+    
 }
 void prompt(){
     std::string entry;
     while(std::cout<<"mysh> " && std::getline(std::cin, entry)){
         if(entry == "exit"){break;}
-        tokenize(entry);
+        tokenizeAndExecute(entry);
     }
     if(std::cin.eof()){std::cout<<"\n";}
 }
