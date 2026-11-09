@@ -6,6 +6,7 @@
 #include <sys/wait.h>/*Required for waitpid()*/
 #include <cstdlib>
 void tokenizeAndExecute(std::string entry){
+    if(entry == "exit"){std::exit(0);}
     std::istringstream ss(entry);//splits the input in the entry variable by spaces
     std::string word;
     std::vector<std::string> args;// a dynamic array where each argument of the entry variable is stored
@@ -39,7 +40,8 @@ void tokenizeAndExecute(std::string entry){
 
     if(pid < 0){
         /*Fork failed*/
-        std::cerr <<"mysh: Forking was unsuccessful!";
+        std::perror("mysh: fork");
+        return;
     }else if(pid == 0){
         /*Forking was successful and a clone takes over the operations*/
         if(execvp(c_args[0], c_args.data()) == -1){
@@ -61,7 +63,6 @@ void tokenizeAndExecute(std::string entry){
 void prompt(){
     std::string entry;
     while(std::cout<<"mysh> " && std::getline(std::cin, entry)){
-        if(entry == "exit"){break;}
         tokenizeAndExecute(entry);
     }
     if(std::cin.eof()){std::cout<<"\n";}
