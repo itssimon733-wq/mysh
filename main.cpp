@@ -4,6 +4,7 @@
 #include <sstream>
 #include <unistd.h>/*Required for fork() and execvp()*/
 #include <sys/wait.h>/*Required for waitpid()*/
+#include <cstdlib>
 void tokenizeAndExecute(std::string entry){
     std::istringstream ss(entry);//splits the input in the entry variable by spaces
     std::string word;
@@ -12,6 +13,20 @@ void tokenizeAndExecute(std::string entry){
         args.push_back(word);//adds each argument moved to the word variable in args
     }
     if(args.empty()){//checks if the user has entered any text
+        return;
+    }
+    if(args[0] == "cd"){
+        const char* target;
+        if(args.size() == 1){
+            target = getenv("HOME");
+        }else if(args.size() == 2){
+            target = args[1].c_str();
+        }else{
+            std::cerr <<"mysh: cd: Too many arguments!\n";
+        }
+        if(target == nullptr){
+            std::cerr <<"mysh: cd: HOME not set.\n";
+        }
         return;
     }
     std::vector<char*> c_args;
