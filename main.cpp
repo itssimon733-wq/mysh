@@ -28,6 +28,9 @@ void tokenizeAndExecute(std::string entry){
         if(target == nullptr){
             std::cerr <<"mysh: cd: HOME not set.\n";
         }
+        if(chdir(target) == -1){
+            std::perror("mysh: cd");
+        }
         return;
     }
     std::vector<char*> c_args;
