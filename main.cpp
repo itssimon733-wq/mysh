@@ -5,13 +5,47 @@
 #include <unistd.h>/*Required for fork() and execvp()*/
 #include <sys/wait.h>/*Required for waitpid()*/
 #include <cstdlib>/*Required for chdir()*/
+#include <cctype>
+bool tokenizeInput(std::string& entry, std::vector<std::string>& args){
+    std::string current;
+    bool inQuotes = false;
+    bool tokenStarted = false;
+    for(char c : entry){
+        /*Opening or closing quotation marks*/
+        if(c == '"'){
+            inQuotes = !inQuotes;
+            tokenStarted = true;
+        }
+        /*Space outside quotation marks*/
+        else if(std::isspace(static_cast<unsigned char>(c)) && !inQuotes){
+            if(tokenStarted){
+                args.push_back(current);
+                current.clear();
+                tokenStarted = false;
+            }
+        }
+        /*Ordinary character*/
+        else{
+            current += c;
+            tokenStarted = true;
+        }
+    }
+        /*Detect a missing match quatation mark*/
+    if(inQuotes){
+        std::cerr<< "mysh: Unmatched double quote\n";
+        return false;
+    }
+    /*Save last argument*/
+    if(tokenStarted){
+        args.push_back(current);
+    }
+    return true;
+}
 void tokenizeAndExecute(std::string entry){
     /*====================Tokenization====================*/
-    std::istringstream ss(entry);/*splits the input in the entry variable by spaces*/
-    std::string word;
-    std::vector<std::string> args;/* a dynamic array where each argument of the entry variable is stored*/
-    while(ss >> word){/* the '>>' operator acts like a vaccum moving one argument at a time to the 'word' variable*/
-        args.push_back(word);/*adds each argument moved to the word variable into the back of args vector*/
+    std::vector<std::string> args;
+    if(!tokenizeInput(entry, args)){
+        return;
     }
     if(args.empty()){//checks if the user has entered any text
         return;
