@@ -4,20 +4,24 @@
 #include <sstream>
 #include <unistd.h>/*Required for fork() and execvp()*/
 #include <sys/wait.h>/*Required for waitpid()*/
-#include <cstdlib>
+#include <cstdlib>/*Required for chdir()*/
 void tokenizeAndExecute(std::string entry){
-    if(entry == "exit"){std::exit(0);}
-    std::istringstream ss(entry);//splits the input in the entry variable by spaces
+    /*====================Tokenization====================*/
+    std::istringstream ss(entry);/*splits the input in the entry variable by spaces*/
     std::string word;
-    std::vector<std::string> args;// a dynamic array where each argument of the entry variable is stored
-    while(ss >> word){// the '>>' operator acts like a vaccum moving one argument at a time to the 'word' variable
-        args.push_back(word);//adds each argument moved to the word variable in args
+    std::vector<std::string> args;/* a dynamic array where each argument of the entry variable is stored*/
+    while(ss >> word){/* the '>>' operator acts like a vaccum moving one argument at a time to the 'word' variable*/
+        args.push_back(word);/*adds each argument moved to the word variable into the back of args vector*/
     }
     if(args.empty()){//checks if the user has entered any text
         return;
     }
+    /*====================Execution and error handling====================*/
+    if(args[0] == "exit"){
+        std::exit(0);
+    }
     if(args[0] == "cd"){
-        const char* target;
+        const char* target = nullptr;
         if(args.size() == 1){
             target = getenv("HOME");
         }else if(args.size() == 2){
