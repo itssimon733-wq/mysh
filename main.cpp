@@ -96,10 +96,11 @@ void tokenizeAndExecute(std::string entry){
         waitpid(pid, &status,0);
     }
 
-    
-    /*std::cout<<"-> Parsed command: "<<args[0]<<"\n";
+    //The following lines of code allow me to see what command is being executed and the arguments
+    std::cout<<"-> Parsed command: "<<args[0]<<"\n";
     for(size_t i = 1; i < args.size(); ++i){
-        std::cout<<"-> Argument "<<i<<": "<<args[i]<<"\n";*/
+        std::cout<<"-> Argument "<<i<<": "<<args[i]<<"\n";
+    }
     
 }
 void prompt(){
