@@ -9,6 +9,7 @@
 bool tokenizeInput(std::string& entry, std::vector<std::string>& args){
     std::string current;
     bool inQuotes = false;
+    bool escapeNext = false;
     bool tokenStarted = false;
     for(char c : entry){
         /*Opening or closing quotation marks*/
