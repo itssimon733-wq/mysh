@@ -8,7 +8,8 @@
 #include <cctype>
 bool tokenizeInput(std::string& entry, std::vector<std::string>& args){
     std::string current;
-    bool inQuotes = false;
+    bool inDoubleQuotes = false;
+    bool inSingleQuotes = false;
     bool escapeNext = false;
     bool tokenStarted = false;
     for(char c : entry){
@@ -24,11 +25,11 @@ bool tokenizeInput(std::string& entry, std::vector<std::string>& args){
         }
         /*Opening or closing quotation marks*/
         else if(c == '"'){
-            inQuotes = !inQuotes;
+            inDoubleQuotes = !inDoubleQuotes;
             tokenStarted = true;
         }
         /*Space outside quotation marks*/
-        else if(std::isspace(static_cast<unsigned char>(c)) && !inQuotes){
+        else if(std::isspace(static_cast<unsigned char>(c)) && !inDoubleQuotes){
             if(tokenStarted){
                 args.push_back(current);
                 current.clear();
@@ -47,7 +48,7 @@ bool tokenizeInput(std::string& entry, std::vector<std::string>& args){
         return false;
     }
         /*Detect a missing match quatation mark*/
-    if(inQuotes){
+    if(inDoubleQuotes){
         std::cerr<< "mysh: Unmatched double quote\n";
         return false;
     }
