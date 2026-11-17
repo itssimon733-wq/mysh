@@ -1,0 +1,8 @@
+# Compiled executables
+/main
+/mysh
+*.out
+*.o
+
+# Editor configuration
+.vscode/
