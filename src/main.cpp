@@ -27,10 +27,9 @@ void tokenizeAndExecute(std::string entry){
         const char* target = nullptr;
         if(args.size() == 1){
             target = getenv("HOME");
-            return;
-        }else if(args.size() == 2){
+        } else if(args.size() == 2){
             target = args[1].c_str();
-        }else{
+        } else{
             std::cerr <<"mysh: cd: Too many arguments!\n";
         }
         if(target == nullptr){
