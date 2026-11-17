@@ -2,9 +2,9 @@
 #include <string>
 #include <vector>
 #include <sstream>
-#include <unistd.h>/*Required for fork() and execvp()*/
+#include <unistd.h>/*Required for chdir(), fork() and execvp()*/
 #include <sys/wait.h>/*Required for waitpid()*/
-#include <cstdlib>/*Required for chdir()*/
+#include <cstdlib>/*Required for getenv() and std::exit()*/
 #include <cctype>
 
 #include "tokenizer.hpp"
