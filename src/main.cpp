@@ -33,9 +33,11 @@ void tokenizeAndExecute(std::string entry){
         } 
         else {
             std::cerr <<"mysh: cd: Too many arguments!\n";
+            return;
         }
         if(target == nullptr){
             std::cerr <<"mysh: cd: HOME not set.\n";
+            return;
         }
         if(chdir(target) == -1){
             std::perror("mysh: cd");
