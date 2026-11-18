@@ -8,6 +8,7 @@
 #include <cctype>
 
 #include "tokenizer.hpp"
+#include "builtins.hpp"
 
 
 void tokenizeAndExecute(std::string entry){
