@@ -35,8 +35,6 @@ bool handleBuiltin(const std::vector<std::string>& args){
         }
         return true;
     } 
-    else {
-        return false;
-    }
+    
     return false;
 }
