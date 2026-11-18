@@ -21,7 +21,10 @@ void tokenizeAndExecute(std::string entry){
         return;
     }
     /*====================Execution and error handling====================*/
-    if(args[0] == "exit"){
+    if(handleBuiltin(args)){
+        return;
+    }
+   /* if(args[0] == "exit"){
         std::exit(0);
     }
     if(args[0] == "cd"){
@@ -44,7 +47,7 @@ void tokenizeAndExecute(std::string entry){
             std::perror("mysh: cd");
         }
         return;
-    }
+    }*/
     std::vector<char*> c_args;
     for(const auto& arg : args){
         c_args.push_back(const_cast<char*>(arg.c_str()));
