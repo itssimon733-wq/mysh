@@ -20,34 +20,11 @@ void tokenizeAndExecute(std::string entry){
     if(args.empty()){//checks if the user has entered any text
         return;
     }
-    /*====================Execution and error handling====================*/
+    
     if(handleBuiltin(args)){
         return;
     }
-   /* if(args[0] == "exit"){
-        std::exit(0);
-    }
-    if(args[0] == "cd"){
-        const char* target = nullptr;
-        if(args.size() == 1){
-            target = getenv("HOME");
-        } 
-        else if(args.size() == 2){
-            target = args[1].c_str();
-        } 
-        else {
-            std::cerr <<"mysh: cd: Too many arguments!\n";
-            return;
-        }
-        if(target == nullptr){
-            std::cerr <<"mysh: cd: HOME not set.\n";
-            return;
-        }
-        if(chdir(target) == -1){
-            std::perror("mysh: cd");
-        }
-        return;
-    }*/
+   
     std::vector<char*> c_args;
     for(const auto& arg : args){
         c_args.push_back(const_cast<char*>(arg.c_str()));
