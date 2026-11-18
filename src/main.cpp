@@ -51,13 +51,16 @@ void tokenizeAndExecute(std::string entry){
 
     //The following lines of code allow me to see what command is being executed and the arguments
     std::cout<<"-> Parsed command: "<<args[0]<<"\n";
+    
     for(size_t i = 1; i < args.size(); ++i){
         std::cout<<"-> Argument "<<i<<": "<<args[i]<<"\n";
     }
     
 }
 void prompt(){
+
     std::string entry;
+
     while(std::cout<<"mysh> " && std::getline(std::cin, entry)){
         tokenizeAndExecute(entry);
     }
